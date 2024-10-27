@@ -1,0 +1,320 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/127.0.0.1:8000"
+        }
+    ],
+    "info": {
+        "name": "Laravel",
+        "_postman_id": "5e1df8c0-e22a-46fd-898e-ea1c6be49236",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "description": "Endpoints for user authentication using Laravel Passport.",
+            "item": [
+                {
+                    "name": "Obtain Access Token",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "oauth\/token",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/oauth\/token"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"grant_type\":\"password\",\"client_id\":2,\"client_secret\":\"YourClientSecretHere\",\"username\":\"admin@example.com\",\"password\":\"password123\",\"scope\":\"\"}"
+                        },
+                        "description": "This endpoint generates an access token using user credentials.",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 31536000,\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIn...\"\n  \"refresh_token\": \"def502005f7217ce987cccfba437355e90c8a...\"\n}",
+                            "name": "Successful authentication returns an access token."
+                        },
+                        {
+                            "header": [],
+                            "code": 400,
+                            "body": "{\n  \"error\": \"invalid_request\",\n  \"error_description\": \"The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed.\"\n}",
+                            "name": "If the credentials are invalid or missing."
+                        },
+                        {
+                            "header": [],
+                            "code": 401,
+                            "body": "{\n  \"error\": \"invalid_grant\",\n  \"error_description\": \"The user credentials were incorrect.\"\n}\n",
+                            "name": "If the credentials are incorrect."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Holiday Plans",
+            "description": "",
+            "item": [
+                {
+                    "name": "Get all holiday plans.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a list of all holiday plans available."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "[\n{\n\"title\": \"Summer Break\",\n\"description\": A relaxing holiday to see old friends.\n\"date\": \"2024-07-20\",\n\"location\": \"Algarve\",\n\"participants\": [\"Jo\u00e3o\", \"Maria\"]\n}\n]",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a new holiday plan.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"Summer Break\",\"description\":\"A relaxing holiday\",\"date\":\"2024-07-20\",\"location\":\"Algarve\",\"participants\":[\"Jo\u00e3o\",\"Maria\"]}"
+                        },
+                        "description": "Adds a new holiday plan to the system with the specified details."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\n  \"id\": 2,\n  \"title\": \"Summer Break\",\n  \"description\": A relaxing holiday.\n  \"date\": \"2024-07-20\",\n  \"location\": \"Algarve\",\n  \"participants\": [\"Jo\u00e3o\", \"Maria\"]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Show holiday plan details.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the holiday plan."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Displays details of a specific holiday plan by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"title\": \"Summer Break\",\n  \"description\": A relaxing holiday to see old friends.\n  \"date\": \"2024-07-20\",\n  \"location\": \"Algarve\",\n  \"participants\": [\"Jo\u00e3o\", \"Maria\"]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update holiday plan.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the holiday plan to update."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"title\":\"Winter Escape\",\"description\":\"A relaxing holiday\",\"date\":\"2024-12-15\",\"location\":\"Serra da Estrela\",\"participants\":[\"David\",\"Mafalda\"]}"
+                        },
+                        "description": "Modifies the details of an existing holiday plan."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n  \"id\": 1,\n  \"name\": \"Winter Escape\",\n  \"date\": \"2024-12-15\",\n  \"location\": \"Serra da Estrela\",\n  \"participants\": [\"David\", \"Mafalda\"]\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete holiday plan.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the holiday plan to delete."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Removes a specific holiday plan by its ID."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": "{\n  \"message\": \"Holiday plan deleted successfully.\"\n}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Generate PDF for holiday plan.",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/holidays\/:id\/pdf",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/holidays\/:id\/pdf",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the holiday plan to generate the PDF for."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Generates a PDF file for a specific holiday plan, detailing the information."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "application\/pdf",
+                            "name": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

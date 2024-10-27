@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class HolidayPlanRequest extends FormRequest
+
+class HolidayPlanRequest extends AppRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class HolidayPlanRequest extends FormRequest
             'description' => 'required|string',
             'date' => 'required|date',
             'location' => 'required|string',
-            'participants' => 'nulablel|array',
+            'participants' => 'nullable|array',
         ];
     }
 
@@ -45,4 +45,31 @@ class HolidayPlanRequest extends FormRequest
             'participants.array' => 'The participants must be an array.',
         ];
     }
+
+    public function bodyParameters()
+    {
+        return [
+            'title' => [
+                'description' => 'The name of the holiday plan.',
+                'example' => 'Summer Vacation',
+            ],
+            'description' => [
+                'description' => 'The description of the holiday plan.',
+                'example' => 'Summer Vacation',
+            ],
+            'date' => [
+                'description' => 'The date of the holiday.',
+                'example' => '2024-07-20',
+            ],
+            'location' => [
+                'description' => 'The location of the holiday.',
+                'example' => 'Lisbon',
+            ],
+            'participants' => [
+                'description' => 'List of participants in the holiday.',
+                'example' => ['Caio', 'João'],
+            ],
+        ];
+    }
+
 }

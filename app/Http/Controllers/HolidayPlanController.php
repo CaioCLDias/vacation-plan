@@ -7,21 +7,38 @@ use App\Http\Resources\HolidayPlanResource;
 use App\Models\HolidayPlan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
 class HolidayPlanController extends Controller
 {
-    protected $holidayPlan;
+    protected HolidayPlan $holidayPlan;
 
     public function __construct(HolidayPlan $holidayPlan) {
         $this->holidayPlan = $holidayPlan;
     }
+
     /**
-     * Display a listing of the resource.
+     * Get all holiday plans.
+     *
+     * Retrieves a list of all holiday plans available.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @response 200 [
+     * {
+     * "title": "Summer Break",
+     * "description": A relaxing holiday to see old friends.
+     * "date": "2024-07-20",
+     * "location": "Algarve",
+     * "participants": ["João", "Maria"]
+     * }
+     * ]
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try{
 
@@ -41,9 +58,27 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new holiday plan.
+     *
+     * Adds a new holiday plan to the system with the specified details.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @bodyParam title string required The title of the holiday plan. Example: Summer Break
+     * @bodyParam description string required The description of the holiday plan. Example: A relaxing holiday
+     * @bodyParam date required The date of the holiday. Example: 2024-07-20
+     * @bodyParam location string required The location of the holiday. Example: Algarve
+     * @bodyParam participants array List of participants. Example: ["João", "Maria"]
+     * @response 201 {
+     *   "id": 2,
+     *   "title": "Summer Break",
+     *   "description": A relaxing holiday.
+     *   "date": "2024-07-20",
+     *   "location": "Algarve",
+     *   "participants": ["João", "Maria"]
+     * }
      */
-    public function store(HolidayPlanRequest $request)
+    public function store(HolidayPlanRequest $request): JsonResponse
     {
         DB::beginTransaction();
 
@@ -67,18 +102,31 @@ class HolidayPlanController extends Controller
             ], 500);
         }
     }
-
     /**
-     * Display the specified resource.
+     * Show holiday plan details.
+     *
+     * Displays details of a specific holiday plan by its ID.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @urlParam id integer required The ID of the holiday plan. Example: 1
+     * @response 200 {
+     *   "title": "Summer Break",
+     *   "description": A relaxing holiday to see old friends.
+     *   "date": "2024-07-20",
+     *   "location": "Algarve",
+     *   "participants": ["João", "Maria"]
+     *}
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try{
 
             $holidayPlan = $this->holidayPlan->findOrFail($id);
 
-            return new HolidayPlanResource($holidayPlan);
+            $holidayPlanResource = new HolidayPlanResource($holidayPlan);
 
+            return response()->json($holidayPlanResource, 200);
 
         }catch (ModelNotFoundException $e){
             return response()->json([
@@ -93,9 +141,27 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update holiday plan.
+     *
+     * Modifies the details of an existing holiday plan.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @urlParam id integer required The ID of the holiday plan to update. Example: 1
+     * @bodyParam title string The new title of the holiday plan. Example: Winter Escape
+     * @bodyParam description string required The description of the holiday plan. Example: A relaxing holiday
+     * @bodyParam date The new date of the holiday. Example: 2024-12-15
+     * @bodyParam location string The new location of the holiday. Example: Serra da Estrela
+     * @bodyParam participants array Updated list of participants. Example: ["David", "Mafalda"]
+     * @response 200 {
+     *   "id": 1,
+     *   "name": "Winter Escape",
+     *   "date": "2024-12-15",
+     *   "location": "Serra da Estrela",
+     *   "participants": ["David", "Mafalda"]
+     * }
      */
-    public function update(HolidayPlanRequest $request, $id)
+    public function update(HolidayPlanRequest $request, $id): JsonResponse
     {
         DB::beginTransaction();
 
@@ -130,9 +196,18 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete holiday plan.
+     *
+     * Removes a specific holiday plan by its ID.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @urlParam id integer required The ID of the holiday plan to delete. Example: 1
+     * @response 204 {
+     *   "message": "Holiday plan deleted successfully."
+     * }
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         try{
 
@@ -157,10 +232,16 @@ class HolidayPlanController extends Controller
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * Generate PDF for holiday plan.
+     *
+     * Generates a PDF file for a specific holiday plan, detailing the information.
+     *
+     * @group Holiday Plans
+     * @authenticated
+     * @urlParam id integer required The ID of the holiday plan to generate the PDF for. Example: 1
+     * @response 200 application/pdf
      */
-    public function generatePdf($id)
+    public function generatePdf($id): Response|JsonResponse
     {
         try{
 
@@ -181,4 +262,5 @@ class HolidayPlanController extends Controller
             ],500);
         }
     }
+
 }

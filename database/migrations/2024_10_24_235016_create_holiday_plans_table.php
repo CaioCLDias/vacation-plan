@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date');
             $table->string('location');
             $table->json('participants')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

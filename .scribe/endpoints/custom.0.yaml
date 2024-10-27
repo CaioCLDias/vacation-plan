@@ -1,0 +1,73 @@
+- httpMethods:
+    - POST
+  uri: oauth/token
+  metadata:
+    groupName: Authentication
+    groupDescription: "Endpoints for user authentication using Laravel Passport."
+    title: "Obtain Access Token"
+    description: "This endpoint generates an access token using user credentials."
+    authenticated: false
+  headers:
+    Content-Type: application/json
+    Accept: application/json
+  bodyParameters:
+    grant_type:
+      name: grant_type
+      description: "Type of grant being used. For password-based login, use 'password'."
+      required: true
+      example: password
+      type: string
+    client_id:
+      name: client_id
+      description: "Client ID from your Laravel Passport configuration."
+      required: true
+      example: 2
+      type: integer
+    client_secret:
+      name: client_secret
+      description: "Client secret for the specified client ID."
+      required: true
+      example: "YourClientSecretHere"
+      type: string
+    username:
+      name: username
+      description: "User's email or username."
+      required: true
+      example: "admin@example.com"
+      type: string
+    password:
+      name: password
+      description: "User's password."
+      required: true
+      example: "password123"
+      type: string
+    scope:
+      name: scope
+      description: "Scopes the user is requesting access to."
+      required: false
+      example: ""
+      type: string
+  responses:
+    - status: 200
+      description: "Successful authentication returns an access token."
+      content: |
+        {
+          "token_type": "Bearer",
+          "expires_in": 31536000,
+          "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIn..."
+          "refresh_token": "def502005f7217ce987cccfba437355e90c8a..."
+        }
+    - status: 400
+      description: "If the credentials are invalid or missing."
+      content: |
+        {
+          "error": "invalid_request",
+          "error_description": "The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed."
+        }
+    - status: 401
+      description: "If the credentials are incorrect."
+      content: |
+        {
+          "error": "invalid_grant",
+          "error_description": "The user credentials were incorrect."
+        }

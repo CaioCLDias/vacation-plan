@@ -1,0 +1,328 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8000'
+paths:
+  /oauth/token:
+    post:
+      summary: 'Obtain Access Token'
+      operationId: obtainAccessToken
+      description: 'This endpoint generates an access token using user credentials.'
+      parameters: []
+      responses:
+        200:
+          description: 'Successful authentication returns an access token.'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 31536000,\n  \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIn...\"\n  \"refresh_token\": \"def502005f7217ce987cccfba437355e90c8a...\"\n}"
+        400:
+          description: 'If the credentials are invalid or missing.'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: invalid_request
+                  error_description: 'The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed.'
+                properties:
+                  error:
+                    type: string
+                    example: invalid_request
+                  error_description:
+                    type: string
+                    example: 'The request is missing a required parameter, includes an unsupported parameter value, or is otherwise malformed.'
+        401:
+          description: 'If the credentials are incorrect.'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: invalid_grant
+                  error_description: 'The user credentials were incorrect.'
+                properties:
+                  error:
+                    type: string
+                    example: invalid_grant
+                  error_description:
+                    type: string
+                    example: 'The user credentials were incorrect.'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  description: "Type of grant being used. For password-based login, use 'password'."
+                  example: password
+                  nullable: false
+                client_id:
+                  type: integer
+                  description: 'Client ID from your Laravel Passport configuration.'
+                  example: 2
+                  nullable: false
+                client_secret:
+                  type: string
+                  description: 'Client secret for the specified client ID.'
+                  example: YourClientSecretHere
+                  nullable: false
+                username:
+                  type: string
+                  description: "User's email or username."
+                  example: admin@example.com
+                  nullable: false
+                password:
+                  type: string
+                  description: "User's password."
+                  example: password123
+                  nullable: false
+                scope:
+                  type: string
+                  description: 'Scopes the user is requesting access to.'
+                  example: ''
+                  nullable: false
+              required:
+                - grant_type
+                - client_id
+                - client_secret
+                - username
+                - password
+      security: []
+  /api/holidays:
+    get:
+      summary: 'Get all holiday plans.'
+      operationId: getAllHolidayPlans
+      description: 'Retrieves a list of all holiday plans available.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "[\n{\n\"title\": \"Summer Break\",\n\"description\": A relaxing holiday to see old friends.\n\"date\": \"2024-07-20\",\n\"location\": \"Algarve\",\n\"participants\": [\"João\", \"Maria\"]\n}\n]"
+      tags:
+        - 'Holiday Plans'
+    post:
+      summary: 'Create a new holiday plan.'
+      operationId: createANewHolidayPlan
+      description: 'Adds a new holiday plan to the system with the specified details.'
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"id\": 2,\n  \"title\": \"Summer Break\",\n  \"description\": A relaxing holiday.\n  \"date\": \"2024-07-20\",\n  \"location\": \"Algarve\",\n  \"participants\": [\"João\", \"Maria\"]\n}"
+      tags:
+        - 'Holiday Plans'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The title of the holiday plan.'
+                  example: 'Summer Break'
+                  nullable: false
+                description:
+                  type: string
+                  description: 'The description of the holiday plan.'
+                  example: 'A relaxing holiday'
+                  nullable: false
+                date:
+                  type: required
+                  description: 'The date of the holiday.'
+                  example: '2024-07-20'
+                  nullable: false
+                location:
+                  type: string
+                  description: 'The location of the holiday.'
+                  example: Algarve
+                  nullable: false
+                participants:
+                  type: array
+                  description: 'List of participants.'
+                  example:
+                    - João
+                    - Maria
+                  items:
+                    type: string
+                    nullable: true
+              required:
+                - title
+                - description
+                - location
+  '/api/holidays/{id}':
+    get:
+      summary: 'Show holiday plan details.'
+      operationId: showHolidayPlanDetails
+      description: 'Displays details of a specific holiday plan by its ID.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"title\": \"Summer Break\",\n  \"description\": A relaxing holiday to see old friends.\n  \"date\": \"2024-07-20\",\n  \"location\": \"Algarve\",\n  \"participants\": [\"João\", \"Maria\"]\n}"
+      tags:
+        - 'Holiday Plans'
+    put:
+      summary: 'Update holiday plan.'
+      operationId: updateHolidayPlan
+      description: 'Modifies the details of an existing holiday plan.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  name: 'Winter Escape'
+                  date: '2024-12-15'
+                  location: 'Serra da Estrela'
+                  participants:
+                    - David
+                    - Mafalda
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: 'Winter Escape'
+                  date:
+                    type: string
+                    example: '2024-12-15'
+                  location:
+                    type: string
+                    example: 'Serra da Estrela'
+                  participants:
+                    type: array
+                    example:
+                      - David
+                      - Mafalda
+                    items:
+                      type: string
+      tags:
+        - 'Holiday Plans'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 'The new title of the holiday plan.'
+                  example: 'Winter Escape'
+                  nullable: false
+                description:
+                  type: string
+                  description: 'The description of the holiday plan.'
+                  example: 'A relaxing holiday'
+                  nullable: false
+                date:
+                  type: The
+                  description: 'new date of the holiday.'
+                  example: '2024-12-15'
+                  nullable: false
+                location:
+                  type: string
+                  description: 'The new location of the holiday.'
+                  example: 'Serra da Estrela'
+                  nullable: false
+                participants:
+                  type: array
+                  description: 'Updated list of participants.'
+                  example:
+                    - David
+                    - Mafalda
+                  items:
+                    type: string
+                    nullable: true
+              required:
+                - description
+    delete:
+      summary: 'Delete holiday plan.'
+      operationId: deleteHolidayPlan
+      description: 'Removes a specific holiday plan by its ID.'
+      parameters: []
+      responses:
+        204:
+          description: ''
+      tags:
+        - 'Holiday Plans'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the holiday plan.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/holidays/{id}/pdf':
+    get:
+      summary: 'Generate PDF for holiday plan.'
+      operationId: generatePDFForHolidayPlan
+      description: 'Generates a PDF file for a specific holiday plan, detailing the information.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: application/pdf
+      tags:
+        - 'Holiday Plans'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the holiday plan to generate the PDF for.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Authentication
+    description: 'Endpoints for user authentication using Laravel Passport.'
+  -
+    name: 'Holiday Plans'
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'To obtain your token, authenticate by calling the /oauth/token endpoint with your credentials.'
+security:
+  -
+    default: []
