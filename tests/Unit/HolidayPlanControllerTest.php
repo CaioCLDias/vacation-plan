@@ -69,14 +69,18 @@ class HolidayPlanControllerTest extends TestCase
 
         $holidayPlanMock = Mockery::mock(HolidayPlan::class);
 
-        $holidayPlanMock->shouldReceive('all')->andReturn($holidayPlansData);
+        $holidayPlanMock->shouldReceive('orderBy')
+            ->with('id', 'asc')
+            ->andReturnSelf();
+
+        $holidayPlanMock->shouldReceive('get')
+            ->andReturn($holidayPlansData);
 
         $controller = new HolidayPlanController($holidayPlanMock);
 
         $response = $controller->index();
 
         $this->assertEquals(200, $response->getStatusCode());
-
         $this->assertJson($response->getContent());
     }
 

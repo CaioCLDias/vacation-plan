@@ -1,66 +1,95 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vacation Plan Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+The Vacation Plan application is designed to manage vacation plans efficiently. It includes features like managing holidays, generating API documentation, and secure authentication. This document provides a complete guide to set up and run the application locally.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker and Docker Compose must be installed.
+- A code editor or terminal to interact with the application.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Setting up the Project Locally
 
-## Learning Laravel
+### Step 1: Clone the Repository
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+First, clone the repository from GitHub to your local machine:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/CaioCLDias/vacation-plan.git
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Step 2: Create the Environment File
 
-## Laravel Sponsors
+In the root directory of the project, create an `.env` file by copying the `.env.example` file. This file contains the essential configurations for the application.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+This .env file contains the configuration variables that the application requires to run properly. Ensure you have updated the necessary variables before starting the application.
 
-### Premium Partners
+```bash
+cp .env.example .env
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Step 3: Build and Run Docker Containers
 
-## Contributing
+Once you have set up the `.env` file, you can build and run the project using Docker Compose:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+docker-compose up -d --build
+```
 
-## Code of Conduct
+When you run this command, Docker will:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Create a container for the application.
+- Create a container for the PostgreSQL database.
+- Run the migration and seeders.
+- Generate Passport keys for authentication.
 
-## Security Vulnerabilities
+### Step 4: Access the Application
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- The application will be accessible at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+- API documentation can be accessed at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+- On the homepage ([http://127.0.0.1:8000](http://127.0.0.1:8000)), you will find the credentials for testing, including email, password, `client_id`, and `client_secret`.
 
-## License
+## Authentication Method
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The application uses Laravel Passport for authentication. It supports Password Grant tokens, which are used to authenticate API requests.
+
+## Seeding Data
+
+The project contains seeders to populate the database with default data:
+
+- The **Admin User** is created automatically via a seeder.
+- You can use the credentials of the Admin User for testing purposes.
+- The Holiday Plans table is populated with 10 fake entries generated by the seeder.
+
+## Running Unit Tests
+
+The application includes unit tests that validate the functionality of key features. These tests focus on ensuring that requests are processed successfully when expected.
+To run the unit tests, use:
+
+```bash
+docker exec -it vacation-plan-app php artisan test --testsuite=Unit
+```
+
+## Application Features
+
+1. **Manage Vacation Plans**: Create, view, and manage vacation plans.
+2. **API Documentation**: API endpoints are documented using Scribe and accessible at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+3. **Authentication**: Secure authentication is managed using Laravel Passport.
+
+## Technologies Used
+
+- **Laravel 11** for backend development.
+- **PostgreSQL** as the database.
+- **Docker** for containerization.
+
+
+## Notes
+
+- The application runs entirely in Docker containers.
+- Make sure that you have the Docker environment set up properly before running the commands.
+- If you encounter issues, refer to the logs by running:
+
+```bash
+docker-compose logs
+```
