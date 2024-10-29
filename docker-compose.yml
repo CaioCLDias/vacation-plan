@@ -13,6 +13,8 @@ services:
             - vacation-plan-network
         depends_on:
             - db
+        ports:
+            - "8000:8000"
 
     db:
         image: postgres:13
@@ -26,18 +28,6 @@ services:
             - pgdata:/var/lib/postgresql/data
         ports:
             - "5432:5432"
-        networks:
-            - vacation-plan-network
-
-    nginx:
-        image: nginx:latest
-        container_name: vacation-plan-nginx
-        restart: unless-stopped
-        volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf
-            - .:/var/www
-        ports:
-            - "80:80"
         networks:
             - vacation-plan-network
 

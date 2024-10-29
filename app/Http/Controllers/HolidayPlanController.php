@@ -42,7 +42,7 @@ class HolidayPlanController extends Controller
     {
         try{
 
-            $holidayPlans = $this->holidayPlan->all();
+            $holidayPlans = $this->holidayPlan->orderBy('id', 'asc')->get();
 
             return $holidayPlans->isEmpty()
                 ? response()->json(['message' => 'No record'], 204)
