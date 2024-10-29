@@ -8,6 +8,7 @@ The Vacation Plan application is designed to manage vacation plans efficiently. 
 
 - Docker and Docker Compose must be installed.
 - A code editor or terminal to interact with the application.
+- For Windows Docker Desktop
 
 ## Setting up the Project Locally
 
@@ -41,6 +42,7 @@ When you run this command, Docker will:
 
 - Create a container for the application.
 - Create a container for the PostgreSQL database.
+- Install dependencies
 - Run the migration and seeders.
 - Generate Passport keys for authentication.
 
@@ -69,6 +71,11 @@ To run the unit tests, use:
 
 ```bash
 docker exec -it vacation-plan-app php artisan test --testsuite=Unit
+```
+OR
+
+```bash
+winpty docker exec -it vacation-plan-app php artisan test --testsuite=Unit
 ```
 
 ## Application Features
