@@ -40,16 +40,16 @@
     <p><strong>Location:</strong> {{ $holidayPlan->location }}</p>
 </div>
 
-<div class="participants">
-    <h2>Participants</h2>
-    <ul>
-        @foreach($holidayPlan->participants as $participant)
-            <li>{{ $participant }}</li>
-        @endforeach
-    </ul>
-</div>
+@if (!empty($holidayPlan->participants))
+    <div class="participants">
+        <h2>Participants</h2>
+        <ul>
+            @foreach($holidayPlan->participants as $participant)
+                <li>{{ $participant }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 </body>
 </html>
-
-
-
