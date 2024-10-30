@@ -100,3 +100,9 @@ winpty docker exec -it vacation-plan-app php artisan test --testsuite=Unit
 ```bash
 docker-compose logs
 ```
+## Video Tutorials
+
+Follow the links below for video tutorials on how to install and use the application:
+
+- [Drive](https://drive.google.com/drive/folders/1l9tJsP9c4SaN9iVOATNGEn5K8yctmJaW?usp=sharing)
+- [Youtube](https://youtu.be/a0g49Kvxl6Y)
